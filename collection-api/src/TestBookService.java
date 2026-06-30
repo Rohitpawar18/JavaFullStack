@@ -14,8 +14,8 @@ public class TestBookService {
 		BookService service = new BookServiceImpl(dao);
 
 		service.save(new Book(101, "Wings Of Fire", "APJ Kalam", 700));
-		service.save(new Book(102, "Normal People", "Sally Rooney", 500));
-		service.save(new Book(103, "Metamorphisis", "Frank Kafka", 230));
+		service.save(new Book(102, "Metamorphisis", "Frank Kafka", 230));
+		service.save(new Book(103, "Normal People", "Sally Rooney", 500));
 		
 		System.out.println("Books : ");
 		for(Book b : service.list()) {
@@ -35,14 +35,16 @@ public class TestBookService {
 			System.out.println(b);
 		}
 		
-		System.out.println("\nDelete Book ISBN = 104 : ");
+		System.out.println("\nDelete Book ISBN = 102 : ");
 		try {
-			service.delete(104);
+			service.delete(102);
 			System.out.println("Deleted Book Successfully!");
 		} catch (BookNotFoundException e) {
 			
 			e.printStackTrace();
 		}
+		
+		service.listOrderByTitle().forEach(System.out::println);
 	}
 
 }
