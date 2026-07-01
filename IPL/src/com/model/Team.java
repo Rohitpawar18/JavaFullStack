@@ -9,5 +9,12 @@ public class Team {
 
 	public String getTeamName() {
 		return teamName;
+	}
+
+	@Override
+	public String toString() {
+		return "Team [teamName=" + teamName + "]";
 	}	
+	
+	
 }

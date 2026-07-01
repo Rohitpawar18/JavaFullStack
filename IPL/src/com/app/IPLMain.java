@@ -11,21 +11,22 @@ public class IPLMain {
 
 	public static void main(String[] args) {
 
+		Scanner sc = new Scanner(System.in);
+
 		IPLService service = new IPLServiceImpl();
 		
 		Team csk = new Team("csk");
 		Team mi = new Team("mi");
 		
-		service.addTeam(csk);
-		service.addTeam(mi);
+//		service.addTeam(csk);
+//		service.addTeam(mi);
+//		
+//		service.addPlayerToTeam(csk, new Player("Dhoni", 7, 12));
+//		service.addPlayerToTeam(csk, new Player("Jadeja", 8, 7));
+//		
+//		service.addPlayerToTeam(mi, new Player("Rohit", 45, 18));
+//		service.addPlayerToTeam(mi, new Player("Bumrah", 93, 15));
 		
-		service.addPlayerToTeam(csk, new Player("Dhoni", 7, 12));
-		service.addPlayerToTeam(csk, new Player("Jadeja", 8, 7));
-		
-		service.addPlayerToTeam(mi, new Player("Rohit", 45, 18));
-		service.addPlayerToTeam(mi, new Player("Bumrah", 93, 15));
-		
-		Scanner sc = new Scanner(System.in);
 		
 		while(true) {
 			System.out.println("\n1.Search Team");
