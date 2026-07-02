@@ -15,8 +15,9 @@ public class IPLMain {
 
 		IPLService service = new IPLServiceImpl();
 		
-		Team csk = new Team("csk");
-		Team mi = new Team("mi");
+		service.loadPlayers("players.csv");
+//		Team csk = new Team("csk");
+//		Team mi = new Team("mi");
 		
 //		service.addTeam(csk);
 //		service.addTeam(mi);
@@ -29,13 +30,17 @@ public class IPLMain {
 		
 		
 		while(true) {
-			System.out.println("\n1.Search Team");
-            System.out.println("2.Search Player");
-            System.out.println("3.Exit");
+			 System.out.println("\n========= IPL MENU =========");
+	            System.out.println("1. Search Team");
+	            System.out.println("2. Search Player");
+	            System.out.println("3. Search By Role");
+	            System.out.println("4. Display All Teams");
+	            System.out.println("5. Exit");
             
             System.out.println("Enter Choice : ");
             int choice = sc.nextInt();
             sc.nextLine();
+            
             switch(choice) {
             	case 1 :
             		System.out.print("Enter Team Name : ");
@@ -48,6 +53,16 @@ public class IPLMain {
             		break;
             		
             	case 3 :
+            		System.out.println("Enter Role : ");
+            		service.searchByRole(sc.nextLine());
+            		break;
+            	
+            	case 4 :
+            		service.displayAllTeams();
+            		break;
+            		
+            	case 5 :
+            		System.out.println("Thank You");
             		sc.close();
             		System.exit(0);
             		

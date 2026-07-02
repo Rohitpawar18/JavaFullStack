@@ -13,7 +13,7 @@ public class CSVReader {
 		List<Player> players = new ArrayList<>();
 		
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("src/players.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("src/players.csv"));
 			String line;
 			
 			br.readLine();

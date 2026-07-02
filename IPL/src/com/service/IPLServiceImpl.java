@@ -1,10 +1,11 @@
-`package com.service;
+package com.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.model.Player;
 import com.model.Team;
@@ -45,19 +46,36 @@ public class IPLServiceImpl implements IPLService{
 	@Override
 	public void searchTeam(String teamName) {
 		
-		for(Map.Entry<Team, List<Player>> entry : teamMap.entrySet()) {
+//		for(Map.Entry<Team, List<Player>> entry : teamMap.entrySet()) {
+//			
+//			Team team = entry.getKey();
+//			if(team.getTeamName().equalsIgnoreCase(teamName)) {
+//				System.out.println("\nTeam : " + team.getTeamName());
+//				
+//				for(Player p : entry.getValue()) {
+//					System.out.println(p);
+//				}
+//				return;
+//			}
+//		}
+//		System.out.println("Team not found");
+		
+		
+		Optional<Map.Entry<Team, List<Player>>> result = 
+				teamMap.entrySet()
+					   .stream()
+					   .filter(entry -> entry.getKey().getTeamName().equalsIgnoreCase(teamName))
+					   .findFirst();
+		if(result.isPresent()) {
+			System.out.println("\n========== TEAM DETAILS ==========");
+			System.out.println("Team : " + result.get().getKey());
 			
-			Team team = entry.getKey();
-			if(team.getTeamName().equalsIgnoreCase(teamName)) {
-				System.out.println("\nTeam : " + team.getTeamName());
-				
-				for(Player p : entry.getValue()) {
-					System.out.println(p);
-				}
-				return;
-			}
+			result.get()
+				  .getValue()
+				  .forEach(System.out::println);
+		}else {
+			System.out.println("Team Not Found.");
 		}
-		System.out.println("Team not found");
 	}
 
 	@Override
@@ -90,7 +108,17 @@ public class IPLServiceImpl implements IPLService{
 	@Override
 	public void searchByRole(String role) {
 		
+		List<Player> players = teamMap.values()
+									  .stream()
+									  .flatMap(List::stream)
+									  .filter(p -> p.getRole().equalsIgnoreCase(role))
+									  .collect(Collectors.toList());
 		
+		if(players.isEmpty()) {
+			System.out.println("N Player Found.");
+		}else {
+			players.forEach(System.out::println);
+		}
 	}
 
 	@Override
