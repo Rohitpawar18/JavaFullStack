@@ -1,45 +1,132 @@
 package com.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.main.JdbcFactory;
 import com.pojo.Book;
 
 public class BookDaoJdbcImpl implements BookDao {
-
+	Connection conn = null;
 	@Override
 	public boolean save(Book b) {
-		
 		String sql = "insert into books values (?, ?, ?, ?)";
-		return false;
+		
+		try {
+			conn = JdbcFactory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, b.getIsbn());
+			stmt.setString(2, b.getTitle());
+			stmt.setString(3, b.getAuthor());
+			stmt.setDouble(4, b.getPrice());
+			
+			stmt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public Optional<Book> find(int isbn) {
-		
 		String sql = "select * from books where isbn = " + isbn;
-		return Optional.empty();
+		
+		try {
+			conn = JdbcFactory.getConnection();
+			ResultSet rs = conn.createStatement().executeQuery(sql);
+			Book b = null;
+			if(rs.next()) {
+				b = new Book();
+				b.setIsbn(rs.getInt(1));
+				b.setTitle(rs.getString(2));
+				b.setAuthor(rs.getString(3));
+				b.setPrice(rs.getDouble(4));			
+			}
+			return Optional.ofNullable(b);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return Optional.empty();
+		}	
 	}
 
 	@Override
 	public List<Book> list() {
-		
 		String sql = "select * from books";
-		return null;
+		List<Book> books = new ArrayList<>();
+		
+		try {
+			conn = JdbcFactory.getConnection();
+			ResultSet rs = conn.createStatement().executeQuery(sql);
+			
+			while(rs.next()) {
+				Book b = new Book();
+				b.setIsbn(rs.getInt(1));
+				b.setTitle(rs.getString(2));
+				b.setAuthor(rs.getString(3));
+				b.setPrice(rs.getDouble(4));
+				
+				books.add(b);
+			}
+			return books;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 	}
 
 	@Override
 	public boolean delete(int isbn) {
+		String sql = "delete from books where isbn = ?";
 		
-		String sql = "delete from books where isbm = " + isbn;
-		return false;
+		try {
+			conn = JdbcFactory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, isbn);
+			
+			return stmt.executeUpdate() > 0;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public List<Book> findByPrice(double min, double max) {
-		
 		String sql = "select * from books where price between ? and ?";
-		return null;
+		
+		List<Book> books = new ArrayList<>();
+		
+		try {
+			conn = JdbcFactory.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setDouble(1, min);
+			stmt.setDouble(2, max);
+			
+			ResultSet rs = stmt.executeQuery();
+		
+			while(rs.next()) {
+				Book b = new Book();
+				b.setIsbn(rs.getInt(1));
+				b.setTitle(rs.getString(2));
+				b.setAuthor(rs.getString(3));
+				b.setPrice(rs.getDouble(4));
+				books.add(b);
+			}
+			return books;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

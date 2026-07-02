@@ -2,6 +2,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.main.JdbcFactory;
+
 public class PreparedStatementDemo {
 
 	public static void main(String[] args) {
